@@ -1,0 +1,40 @@
+name: "Last Sale Info"
+on:
+  schedule:
+  - cron: "*/30 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  actions:
+    runs-on: ubuntu-22.04
+    permissions: write-all
+    steps:
+      - name: "Check out the repo"
+        uses: "actions/checkout@v3"
+      
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+      
+      - name: Install pip
+        run: |
+          python -m ensurepip --upgrade
+      
+      - name: Install dependencies with pip
+        run: |
+          pip install -r requirements.txt
+      
+      - name: Get last sale price info
+        env:
+            ADDRESS: ${{ secrets.ADDRESS }}
+            API_KEY: ${{ secrets.API_KEY }}
+            API_KEY_2: ${{ secrets.API_KEY_2 }}
+            URL_MONGODB: ${{ secrets.URL_MONGODB }}
+            DATABASE: ${{ secrets.DATABASE }}
+            COLLECTION: ${{ secrets.COLLECTION }}
+        run: |
+          python3 main.py
+          echo "## Getting last sale price" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
