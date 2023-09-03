@@ -21,6 +21,7 @@ if tokenList:
         contract = i["contract"]
         token_id = i["tokenId"]
         chain = i["chain"]
+        token_standard = i["tokenStandard"]
 
         existing_item = None
         if database_remote:
@@ -29,6 +30,7 @@ if tokenList:
                     item["contract"] == contract
                     and item["tokenId"] == token_id
                     and item["chain"] == chain
+                    and item.get("tokenStandard") == token_standard
                     and item["owner"] == address
                 ):
                     existing_item = item
