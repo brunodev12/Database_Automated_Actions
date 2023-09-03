@@ -5,7 +5,10 @@ import os
 
 address = os.environ.get("ADDRESS").upper()
 
-tokenList = getUserAssets(address)
+tokenList_eth = getUserAssets(address, "ethereum")
+tokenList_matic = getUserAssets(address, "matic")
+
+tokenList = tokenList_eth + tokenList_matic
 
 database_remote = db.readAllData(address)
 
