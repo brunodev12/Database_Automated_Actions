@@ -34,6 +34,8 @@ jobs:
             URL_MONGODB: ${{ secrets.URL_MONGODB }}
             DATABASE: ${{ secrets.DATABASE }}
             COLLECTION: ${{ secrets.COLLECTION }}
+            ETHEREUM_RPC: ${{ secrets.ETHEREUM_RPC }}
+            POLYGON_RPC: ${{ secrets.POLYGON_RPC }}
         run: |
           python3 main.py
           echo "## Getting last sale price" >> $GITHUB_STEP_SUMMARY

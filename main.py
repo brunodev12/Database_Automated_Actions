@@ -1,5 +1,6 @@
 from services.get_user_assets import getUserAssets
 from services.token_events import getTokenEvents
+from utils.helpers import sorted_list
 import connection.conn as db
 import os
 
@@ -17,13 +18,41 @@ database_remote = db.readAllData(address)
 database_local = []
 
 if tokenList:
-    for i in tokenList:
+
+    previous_contract = ''
+    previous_token_id = ''
+    previous_chain = ''
+    previous_token_standard = ''
+
+    request_counter = 1
+    same_token = False
+
+    for index,i in enumerate(tokenList):
+        number_token = 1
         contract = i["contract"]
+        if contract == 'erc1155':
+            number_token = i["tokenNumber"]
         token_id = i["tokenId"]
         chain = i["chain"]
         token_standard = i["tokenStandard"]
 
-        existing_item = None
+        if index>0:
+            previous_contract = tokenList[index-1]['contract']
+            previous_token_id = tokenList[index-1]['tokenId']
+            previous_chain = tokenList[index-1]['chain']
+            previous_token_standard = tokenList[index-1]['tokenStandard']
+        
+        if (
+            contract == previous_contract
+            and token_id == previous_token_id
+            and chain == previous_chain
+            and token_standard == previous_token_standard
+            ):
+            same_token = True
+        else:
+            same_token = False
+
+        existing_item = {}
         if database_remote:
             for item in database_remote:
                 if (
@@ -32,25 +61,48 @@ if tokenList:
                     and item["chain"] == chain
                     and item.get("tokenStandard") == token_standard
                     and item["owner"] == address
+                    and item.get("tokenNumber") == number_token
                 ):
                     existing_item = item
                     break
 
         if existing_item:
             last_sale_price = existing_item.get("last_sale_price")
+            token_number = existing_item.get("tokenNumber")
+            date = existing_item.get("date")
             id = existing_item.get("_id")
-            i.update({"last_sale_price": last_sale_price, "_id": id})
+            i.update({"last_sale_price": last_sale_price, "date": date, "tokenNumber": token_number, "_id": id})
         else:
-            last_sale_price = getTokenEvents(chain, contract, token_id)
-            i.update({"last_sale_price": last_sale_price})
+            if same_token:
+                request_counter += 1
+            else:
+                request_counter = 1
+            response = getTokenEvents(chain, contract, token_id, request_counter)
+            if response:
+                last_sale_price, date = response
+            else:
+                print(chain, contract, token_id, request_counter)
+                print("Response is None")
+                last_sale_price = None
+                date = "2023-11-18T07:37:47Z"
+            last_sale_price, date = getTokenEvents(chain, contract, token_id, request_counter)
+            i.update({"last_sale_price": last_sale_price, "date": date, "tokenNumber": number_token})
 
-        if i["last_sale_price"] == None:
-            last_sale_price = getTokenEvents(chain, contract, token_id)
-            i.update({"last_sale_price": last_sale_price})
+        #If for some reason a token is saved with 'last_sale_price' = None in the DB then the sale price will be searched. 
+        if i["last_sale_price"] == None and existing_item:
+            print("None Token", existing_item)
+            if same_token:
+                request_counter += 1
+            else:
+                request_counter = 1
+            last_sale_price, date = getTokenEvents(chain, contract, token_id, request_counter)
+            i.update({"last_sale_price": last_sale_price, "date": date, "tokenNumber": number_token})
 
         i.update({"owner": address})
 
     database_local = tokenList
+
+database_local = sorted_list(database_local)
 
 '''Compare local and remote database'''
 
