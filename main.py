@@ -2,9 +2,7 @@ from services.get_user_assets import getUserAssets
 from services.token_events import getTokenEvents
 from utils.helpers import sorted_list
 import connection.conn as db
-import os
-
-address = os.environ.get("ADDRESS").upper()
+from data.constants import address
 
 tokenList_eth = getUserAssets(address, "ethereum")
 tokenList_matic = getUserAssets(address, "matic")
@@ -30,11 +28,11 @@ if tokenList:
     for index,i in enumerate(tokenList):
         number_token = 1
         contract = i["contract"]
-        if contract == 'erc1155':
+        token_standard = i["tokenStandard"]
+        if token_standard == 'erc1155':
             number_token = i["tokenNumber"]
         token_id = i["tokenId"]
         chain = i["chain"]
-        token_standard = i["tokenStandard"]
 
         if index>0:
             previous_contract = tokenList[index-1]['contract']
@@ -85,10 +83,8 @@ if tokenList:
                 print("Response is None")
                 last_sale_price = None
                 date = "2023-11-18T07:37:47Z"
-            last_sale_price, date = getTokenEvents(chain, contract, token_id, request_counter)
             i.update({"last_sale_price": last_sale_price, "date": date, "tokenNumber": number_token})
 
-        #If for some reason a token is saved with 'last_sale_price' = None in the DB then the sale price will be searched. 
         if i["last_sale_price"] == None and existing_item:
             print("None Token", existing_item)
             if same_token:

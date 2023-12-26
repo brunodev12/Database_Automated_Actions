@@ -1,10 +1,6 @@
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-import os
-
-url = os.environ.get('URL_MONGODB')
-_database = os.environ.get('DATABASE')
-_collection = os.environ.get('COLLECTION')
+from data.constants import url, _database, _collection
 
 client = MongoClient(url, server_api=ServerApi('1'))
 
