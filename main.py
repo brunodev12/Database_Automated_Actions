@@ -3,6 +3,7 @@ from services.token_events import getTokenEvents
 from utils.helpers import sorted_list
 import connection.conn as db
 from data.constants import address
+import copy
 
 tokenList_eth = getUserAssets(address, "ethereum")
 tokenList_matic = getUserAssets(address, "matic")
@@ -61,7 +62,7 @@ if tokenList:
                     and item["owner"] == address
                     and item.get("tokenNumber") == number_token
                 ):
-                    existing_item = item
+                    existing_item = copy.copy(item)
                     break
 
         if existing_item:
@@ -71,27 +72,18 @@ if tokenList:
             id = existing_item.get("_id")
             i.update({"last_sale_price": last_sale_price, "date": date, "tokenNumber": token_number, "_id": id})
         else:
-            if same_token:
-                request_counter += 1
-            else:
+            if not same_token:
                 request_counter = 1
             response = getTokenEvents(chain, contract, token_id, request_counter)
             if response:
                 last_sale_price, date = response
+                if same_token:
+                    request_counter += 1
             else:
                 print(chain, contract, token_id, request_counter)
                 print("Response is None")
                 last_sale_price = None
                 date = "2023-11-18T07:37:47Z"
-            i.update({"last_sale_price": last_sale_price, "date": date, "tokenNumber": number_token})
-
-        if i["last_sale_price"] == None and existing_item:
-            print("None Token", existing_item)
-            if same_token:
-                request_counter += 1
-            else:
-                request_counter = 1
-            last_sale_price, date = getTokenEvents(chain, contract, token_id, request_counter)
             i.update({"last_sale_price": last_sale_price, "date": date, "tokenNumber": number_token})
 
         i.update({"owner": address})
