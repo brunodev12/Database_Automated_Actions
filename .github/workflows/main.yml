@@ -36,6 +36,8 @@ jobs:
             COLLECTION: ${{ secrets.COLLECTION }}
             ETHEREUM_RPC: ${{ secrets.ETHEREUM_RPC }}
             POLYGON_RPC: ${{ secrets.POLYGON_RPC }}
+            ARBITRUM_RPC: ${{ secrets.ARBITRUM_RPC }}
+            BASE_RPC: ${{ secrets.BASE_RPC }}
         run: |
           python3 main.py
           echo "## Getting last sale price" >> $GITHUB_STEP_SUMMARY

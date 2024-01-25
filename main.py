@@ -2,13 +2,13 @@ from services.get_user_assets import getUserAssets
 from services.token_events import getTokenEvents
 from utils.helpers import sorted_list
 import connection.conn as db
-from data.constants import address
+from data.constants import address, blockchains
 import copy
 
-tokenList_eth = getUserAssets(address, "ethereum")
-tokenList_matic = getUserAssets(address, "matic")
-
-tokenList = tokenList_eth + tokenList_matic
+tokenList = []
+for network in blockchains:
+    contracts = getUserAssets(address, network)
+    tokenList += contracts
 
 database_remote = db.readAllData(address)
 
@@ -103,8 +103,7 @@ if database_remote:
         if remote_element not in database_local:
             db.deleteData(remote_element)
 
-    db.closeConnection()
-
 else:
     db.createData(database_local)
-    db.closeConnection()
+    
+db.closeConnection()
