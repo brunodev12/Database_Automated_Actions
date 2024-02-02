@@ -1,7 +1,8 @@
 from services.get_user_assets import getUserAssets
-from services.token_events import getTokenEvents
+from utils.last_price_utils import getLastSalePrice
 from utils.helpers import sorted_list
 import connection.conn as db
+from connection.conn import DuplicateKeyError
 from data.constants import address, blockchains
 import copy
 
@@ -74,7 +75,7 @@ if tokenList:
         else:
             if not same_token:
                 request_counter = 1
-            response = getTokenEvents(chain, contract, token_id, request_counter)
+            response = getLastSalePrice(chain, contract, token_id, request_counter)
             if response:
                 last_sale_price, date = response
                 if same_token:
@@ -95,15 +96,22 @@ database_local = sorted_list(database_local)
 '''Compare local and remote database'''
 
 if database_remote:
-    for local_element in database_local:
-        if local_element not in database_remote:
-            db.insertData(local_element)
 
     for remote_element in database_remote:
         if remote_element not in database_local:
             db.deleteData(remote_element)
 
+    for local_element in database_local:
+        sale_price = local_element['last_sale_price']
+        if not sale_price:
+            continue
+        if local_element not in database_remote:
+            try:
+                db.insertData(local_element)
+            except DuplicateKeyError:
+                db.updateElement(local_element)
+
 else:
     db.createData(database_local)
-    
+
 db.closeConnection()
