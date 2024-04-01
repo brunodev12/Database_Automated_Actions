@@ -29,6 +29,7 @@ jobs:
       
       - name: Remove expired data
         env:
+            ADDRESS: ${{ secrets.ADDRESS }}
             URL_MONGODB: ${{ secrets.URL_MONGODB }}
             DATABASE: ${{ secrets.DATABASE }}
             COLLECTION: ${{ secrets.COLLECTION }}
