@@ -31,6 +31,8 @@ jobs:
         env:
             ADDRESS: ${{ secrets.ADDRESS }}
             URL_MONGODB: ${{ secrets.URL_MONGODB }}
+            DATABASE: ${{ secrets.DATABASE }}
+            COLLECTION: ${{ secrets.COLLECTION }}
         run: |
           python3 check_connection_data.py
           echo "## Removing expired connection data" >> $GITHUB_STEP_SUMMARY

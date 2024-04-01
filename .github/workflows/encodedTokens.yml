@@ -30,6 +30,8 @@ jobs:
       - name: Remove expired data
         env:
             URL_MONGODB: ${{ secrets.URL_MONGODB }}
+            DATABASE: ${{ secrets.DATABASE }}
+            COLLECTION: ${{ secrets.COLLECTION }}
         run: |
           python3 check_encoded_tokens.py
           echo "## Removing expired encoded tokens" >> $GITHUB_STEP_SUMMARY
