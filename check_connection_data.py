@@ -8,6 +8,6 @@ if __name__ == '__main__':
     connection_data = db.getConnectionData(address)
 
     days_counter(connection_data)
-    connection_data_expired = remove_expired_items(connection_data, 1)
+    connection_data_expired = remove_expired_items(connection_data, 7)
     
     db.removeExpiredConnectionData(connection_data_expired)
