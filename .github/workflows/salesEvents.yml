@@ -29,6 +29,7 @@ jobs:
       
       - name: Get sales and average price
         env:
+            ADDRESS: ${{ secrets.ADDRESS }}
             URL_MONGODB: ${{ secrets.URL_MONGODB }}
             API_KEY: ${{ secrets.API_KEY }}
             API_KEY_2: ${{ secrets.API_KEY_2 }}
