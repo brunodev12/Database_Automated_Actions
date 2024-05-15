@@ -33,6 +33,8 @@ jobs:
             URL_MONGODB: ${{ secrets.URL_MONGODB }}
             API_KEY: ${{ secrets.API_KEY }}
             API_KEY_2: ${{ secrets.API_KEY_2 }}
+            DATABASE: ${{ secrets.DATABASE }}
+            COLLECTION: ${{ secrets.COLLECTION }}
         run: |
           python3 check_sales_events.py
           echo "## Getting sales events" >> $GITHUB_STEP_SUMMARY
