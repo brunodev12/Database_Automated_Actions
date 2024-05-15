@@ -1,10 +1,11 @@
-from services.get_user_assets import getUserAssets
+import copy
+import connection.conn as db
+from src.get_user_assets import getUserAssets
 from utils.last_price_utils import getLastSalePrice
 from utils.helpers import sorted_list
-import connection.conn as db
 from connection.conn import DuplicateKeyError
 from data.constants import address, blockchains
-import copy
+
 
 tokenList = []
 for network in blockchains:
