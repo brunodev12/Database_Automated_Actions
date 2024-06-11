@@ -40,6 +40,11 @@ jobs:
             ARBITRUM_RPC: ${{ secrets.ARBITRUM_RPC }}
             BASE_RPC: ${{ secrets.BASE_RPC }}
             BLAST_RPC: ${{ secrets.BLAST_RPC }}
+            ETHEREUM_RPC_2: ${{ secrets.ETHEREUM_RPC_2 }}
+            POLYGON_RPC_2: ${{ secrets.POLYGON_RPC_2 }}
+            ARBITRUM_RPC_2: ${{ secrets.ARBITRUM_RPC_2 }}
+            BASE_RPC_2: ${{ secrets.BASE_RPC_2 }}
+            BLAST_RPC_2: ${{ secrets.BLAST_RPC_2 }}
         run: |
           python3 main.py
           echo "## Getting last sale price" >> $GITHUB_STEP_SUMMARY
