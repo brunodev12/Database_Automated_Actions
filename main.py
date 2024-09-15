@@ -92,7 +92,7 @@ if database_remote:
             except DuplicateKeyError:
                 db.updateElement(local_element)
 
-else:
+elif database_local:
     db.createData(database_local)
 
 db.closeConnection()
