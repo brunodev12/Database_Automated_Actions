@@ -1,11 +1,10 @@
 import connection.conn as db
-from data.constants import address
 from utils.helpers import days_counter, remove_expired_items
 
 
-def removeExpiredItemsCD(address:str, chain:str):
+def removeExpiredItemsCD(chain:str):
 
-    connection_data = db.getConnectionData(address, chain)
+    connection_data = db.getConnectionData(chain)
 
     print(f"---------------{chain.upper()}---------------")
     days_counter(connection_data)
@@ -16,5 +15,5 @@ def removeExpiredItemsCD(address:str, chain:str):
 
 if __name__ == '__main__':
 
-    removeExpiredItemsCD(address, 'ethereum')
-    removeExpiredItemsCD(address, 'blast')
+    removeExpiredItemsCD('ethereum')
+    removeExpiredItemsCD('blast')
