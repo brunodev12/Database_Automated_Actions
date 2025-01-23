@@ -1,7 +1,7 @@
 name: "Get Sales Events"
 on:
   schedule:
-  - cron: "*/60 */3 * * *"
+  - cron: "*/20 * * * *"
   workflow_dispatch: {}
 
 jobs:
