@@ -81,8 +81,8 @@ if database_remote:
 
     for local_element in database_local:
         sale_price = local_element['last_sale_price']
-        if not sale_price:
-            continue
+        # if not sale_price:
+        #     continue
         if local_element not in database_remote:
             print("-------------------------Adding element---------------------------")
             print(local_element['contract'], local_element['tokenId'], local_element['tokenStandard'],
