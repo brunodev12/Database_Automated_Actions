@@ -1,14 +1,14 @@
 name: "Get Sales Events"
 on:
   schedule:
-  - cron: "*/20 * * * *"
+  - cron: "*/25 * * * *"
   workflow_dispatch: {}
 
 jobs:
   actions:
     runs-on: ubuntu-22.04
     permissions: write-all
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - name: "Check out the repo"
         uses: "actions/checkout@v4"
