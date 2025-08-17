@@ -3,23 +3,22 @@ import connection.conn as db
 from src.get_user_assets import getUserAssets
 from utils.last_price_utils import getLastSalePrice
 from utils.helpers import sorted_list
-from connection.conn import DuplicateKeyError
+from pymongo.errors import DuplicateKeyError
 from data.constants import address, blockchains
 
 
-tokenList = []
+tokenList:list[dict] = []
 for network in blockchains:
     contracts = getUserAssets(address, network)
     tokenList += contracts
 
-database_remote = db.readAllData(address)
+database_remote:list[dict] = db.readAllData(address)
 
 '''Create local database'''
 
 database_local = []
 
 if tokenList:
-
 
     for i in tokenList:
         number_token = 1
@@ -29,7 +28,6 @@ if tokenList:
             number_token = i["tokenNumber"]
         token_id = i["tokenId"]
         chain = i["chain"]
-
 
         existing_item = {}
         if database_remote:
@@ -81,8 +79,6 @@ if database_remote:
 
     for local_element in database_local:
         sale_price = local_element['last_sale_price']
-        # if not sale_price:
-        #     continue
         if local_element not in database_remote:
             print("-------------------------Adding element---------------------------")
             print(local_element['contract'], local_element['tokenId'], local_element['tokenStandard'],
