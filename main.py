@@ -6,7 +6,7 @@ from utils.helpers import sorted_list
 from pymongo.errors import DuplicateKeyError
 from data.constants import address, blockchains
 
-
+print("test")
 tokenList:list[dict] = []
 for network in blockchains:
     contracts = getUserAssets(address, network)
