@@ -30,6 +30,8 @@ jobs:
         env:
             GS_CREDENTIALS: ${{ secrets.GS_CREDENTIALS }}
             URL_MONGODB: ${{ secrets.URL_MONGODB }}
+            DATABASE: ${{ secrets.DATABASE }}
+            COLLECTION: ${{ secrets.COLLECTION }}
         run: |
           python3 update_collections.py
           echo "## Updating collections" >> $GITHUB_STEP_SUMMARY
