@@ -45,3 +45,14 @@ jobs:
           python3 check_arbitrage_collections.py
           echo "## Checking arbitrage collections" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Upload to drive
+        env:
+            GS_CREDENTIALS: ${{ secrets.GS_CREDENTIALS }}
+            URL_MONGODB: ${{ secrets.URL_MONGODB }}
+            DATABASE: ${{ secrets.DATABASE }}
+            COLLECTION: ${{ secrets.COLLECTION }}
+        run: |
+          python3 upload_to_drive.py
+          echo "## Uploading to drive" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
