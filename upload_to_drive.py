@@ -8,6 +8,9 @@ def upload_collections():
 
     collections:list[dict] = readList()
 
+    if not collections:
+        return
+
     utc_time = datetime.now(timezone.utc)
 
     formatted_time = utc_time.strftime("%Y-%m-%d %H:%M:%S")
