@@ -32,6 +32,7 @@ jobs:
         env:
             URL_MONGODB: ${{ secrets.URL_MONGODB }}
             ETHEREUM_RPC: ${{ secrets.ETHEREUM_RPC }}
+            API_KEY: ${{ secrets.API_KEY }}
             ADDRESS: ${{ secrets.ADDRESS }}
             PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
             MIN_VOLUME: ${{ vars.MIN_VOLUME }}

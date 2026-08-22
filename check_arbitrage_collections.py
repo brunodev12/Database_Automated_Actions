@@ -15,10 +15,13 @@ if __name__ == '__main__':
 
     arbitrage_collections = setWorkers(arbitrage_collections)
 
+    new_id = 1
     for item in arbitrage_collections:
+        item['ID'] = str(new_id)
         volume_one_week = item.get("volume_one_week", 0.0)
         item['volume_one_week'] = str(volume_one_week)
         item.pop('_id', None)
+        new_id += 1
 
     if arbitrage_collections:
         retry(lambda: deleteList("Arbitrage_Bidding_Bot", "Collection_Info"))
