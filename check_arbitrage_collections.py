@@ -1,4 +1,4 @@
-from connection.conn import deleteList, insertList, readList
+from connection.conn import ensureUniqueKeyIndex, syncList, readList
 from utils.access_token import getAccessToken
 from utils.collections_stats_utils import checkCollectionStats
 from utils.helpers import retry
@@ -24,6 +24,6 @@ if __name__ == '__main__':
         new_id += 1
 
     if arbitrage_collections:
-        retry(lambda: deleteList("Arbitrage_Bidding_Bot", "Collection_Info"))
-        retry(lambda: insertList(arbitrage_collections, "Arbitrage_Bidding_Bot", "Collection_Info"))
+        ensureUniqueKeyIndex("Arbitrage_Bidding_Bot", "Collection_Info")
+        retry(lambda: syncList(arbitrage_collections, "Arbitrage_Bidding_Bot", "Collection_Info"))
 
